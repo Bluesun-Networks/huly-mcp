@@ -7,7 +7,7 @@ export async function listLabels (): Promise<string> {
   const client = await getClient()
   const labels = await client.findAll(tags.class.TagElement, {
     targetClass: tracker.class.Issue
-  })
+  }, { limit: 100 })
 
   if (labels.length === 0) {
     return 'No labels found.'
@@ -32,7 +32,7 @@ export async function addLabel (args: {
   let labelDoc = await client.findOne(tags.class.TagElement, {
     title: args.label,
     targetClass: tracker.class.Issue
-  })
+  }, { limit: 100 })
 
   if (labelDoc === undefined) {
     const labelId: Ref<TagElement> = generateId()

@@ -15,7 +15,7 @@ export async function listPeople (): Promise<string> {
     const channels = await client.findAll(contact.class.Channel, {
       attachedTo: person._id,
       attachedToClass: person._class
-    })
+    }, { limit: 50 })
     const emails = channels
       .filter(ch => ch.provider === contact.channelProvider.Email)
       .map(ch => ch.value)
