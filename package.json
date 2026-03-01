@@ -1,0 +1,43 @@
+{
+  "name": "@bluesun-networks/huly-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Huly project management — issues, documents, people, and labels",
+  "main": "dist/index.js",
+  "bin": {
+    "huly-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "huly",
+    "mcp",
+    "model-context-protocol",
+    "project-management"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@hcengineering/api-client": "^0.7.19",
+    "@hcengineering/contact": "^0.7.0",
+    "@hcengineering/core": "^0.7.26",
+    "@hcengineering/document": "^0.7.0",
+    "@hcengineering/rank": "^0.7.18",
+    "@hcengineering/tags": "^0.7.0",
+    "@hcengineering/task": "^0.7.0",
+    "@hcengineering/tracker": "^0.7.0",
+    "@modelcontextprotocol/sdk": "^1.27.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "typescript": "^5.7.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
