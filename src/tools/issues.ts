@@ -6,7 +6,7 @@ import { parsePriority, priorityToString } from '../utils.js'
 
 export async function listProjects (): Promise<string> {
   const client = await getClient()
-  const projects = await client.findAll(tracker.class.Project, {})
+  const projects = await client.findAll(tracker.class.Project, {}, { limit: 100 })
 
   if (projects.length === 0) {
     return 'No projects found.'

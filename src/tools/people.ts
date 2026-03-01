@@ -4,7 +4,7 @@ import { getClient } from '../huly-client.js'
 
 export async function listPeople (): Promise<string> {
   const client = await getClient()
-  const persons = await client.findAll(contact.class.Person, {})
+  const persons = await client.findAll(contact.class.Person, {}, { limit: 100 })
 
   if (persons.length === 0) {
     return 'No people found.'

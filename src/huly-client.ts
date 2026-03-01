@@ -1,10 +1,19 @@
-import { ConnectOptions, NodeWebSocketFactory, connect, type PlatformClient } from '@hcengineering/api-client'
+import { ConnectOptions, connect, type PlatformClient } from '@hcengineering/api-client'
+import client from '@hcengineering/client'
+import { setMetadata } from '@hcengineering/platform'
+import { PatchedNodeWebSocketFactory } from './socket-factory.js'
 
-let client: PlatformClient | undefined
+let hcClient: PlatformClient | undefined
+
+// No-op persistence store for Node.js (IndexedDB doesn't exist)
+const nullPersistence = {
+  load: async () => ({ full: true, transactions: [], hash: '' }),
+  store: async () => {}
+}
 
 export async function getClient (): Promise<PlatformClient> {
-  if (client !== undefined) {
-    return client
+  if (hcClient !== undefined) {
+    return hcClient
   }
 
   const url = process.env.HULY_URL ?? 'http://localhost:8087'
@@ -16,21 +25,25 @@ export async function getClient (): Promise<PlatformClient> {
     throw new Error('Missing required environment variables: HULY_EMAIL, HULY_PASSWORD, HULY_WORKSPACE')
   }
 
+  setMetadata(client.metadata.UseBinaryProtocol, false)
+  setMetadata(client.metadata.UseProtocolCompression, false)
+  setMetadata(client.metadata.OverridePersistenceStore, nullPersistence as any)
+
   const options: ConnectOptions = {
     email,
     password,
     workspace,
-    socketFactory: NodeWebSocketFactory,
+    socketFactory: PatchedNodeWebSocketFactory,
     connectionTimeout: 30000
   }
 
-  client = await connect(url, options)
-  return client
+  hcClient = await connect(url, options)
+  return hcClient
 }
 
 export async function closeClient (): Promise<void> {
-  if (client !== undefined) {
-    await client.close()
-    client = undefined
+  if (hcClient !== undefined) {
+    await hcClient.close()
+    hcClient = undefined
   }
 }

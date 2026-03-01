@@ -5,7 +5,7 @@ import { getClient } from '../huly-client.js'
 
 export async function listTeamspaces (): Promise<string> {
   const client = await getClient()
-  const teamspaces = await client.findAll(document.class.Teamspace, { archived: false })
+  const teamspaces = await client.findAll(document.class.Teamspace, { archived: false }, { limit: 100 })
 
   if (teamspaces.length === 0) {
     return 'No teamspaces found.'
